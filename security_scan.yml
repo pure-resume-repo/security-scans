@@ -1,0 +1,20 @@
+- name: Perform system scans
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Start nessusd service
+      become: yes
+      systemd:
+        name: nessusd
+        state: started
+    # - name: "Perform Lynis security scan"
+    #   command: >
+    #     sh -c "lynis audit system > /home/user/security-routines/security-scans-results/lynis-scan-$(date +'%b%d')"
+    #   become: no
+    - name: Perform clamscan and save report
+      become: no
+      shell: |
+        clamscan -r -i / > /home/user/security-routines/security-scans-results/scan{{ lookup('pipe','date +"%b%d"') }}clamscan
+      args:
+        executable: /bin/bash

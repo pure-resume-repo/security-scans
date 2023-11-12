@@ -1,0 +1,58 @@
+- name: Configure UFW Rules
+  hosts: localhost
+  connection: local
+  become: yes # to run tasks as sudo
+  tasks:
+    - name: Ensure UFW is installed
+      apt:
+        name: ufw
+        state: present
+    - name: Reset UFW (Optional, this will reset all rules)
+      command: ufw --force reset
+    - name: Deny all incoming traffic by default
+      ufw:
+        direction: incoming
+        policy: deny
+    - name: Deny all outgoing traffic by default
+      ufw:
+        direction: outgoing
+        policy: deny
+    - name: Allow outgoing web traffic on port 80
+      ufw:
+        rule: allow
+        direction: out
+        port: '80'
+        comment: 'Allow outgoing web traffic on port 80'
+    - name: Allow outgoing web traffic on port 443
+      ufw:
+        rule: allow
+        direction: out
+        port: '443'
+        comment: 'Allow outgoing web traffic on port 443'
+    - name: Allow outgoing SSH traffic on port 22
+      ufw:
+        rule: allow
+        direction: out
+        port: '22'
+        comment: 'Allow outgoing SSH traffic on port 22'
+    - name: Allow outgoing SSH traffic on port 20022
+      ufw:
+        rule: allow
+        direction: out
+        port: '20022'
+        comment: 'Allow outgoing SSH traffic on port 20022'
+    - name: Allow outgoing RDP traffic on port 3089
+      ufw:
+        rule: allow
+        direction: out
+        port: '3089'
+        comment: 'Allow outgoing RDP traffic on port 3089'
+    - name: Allow outgoing DNS traffic on port 53
+      ufw:
+        rule: allow
+        direction: out
+        port: '53'
+        comment: 'Allow outgoing DNS traffic on port 53'
+    - name: Enable UFW
+      ufw:
+        state: enabled

@@ -1,0 +1,15 @@
+* Security Updates and Maintenance
+** Updates
+ 1. sudo apt update && sudo apt upgrade -y (sudo apt dist-upgrade for more aggressive bu complete)
+ 2. sudo snap refresh
+ 3. python3 -m pip install --upgrade pip
+ 4. pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 python3 -m pip install -U (include all versions of pip)
+ 5. update phone, tablet, noteair2
+
+** Security Scans
+1. sudo systemctl start nessusd
+2. sudo clamscan -r -i / > /home/May5clamscan
+3. lynis security scan
+
+** Monitoring
+1. snort3

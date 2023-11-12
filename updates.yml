@@ -1,0 +1,36 @@
+- name: Update System
+  hosts: localhost
+  connection: local
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Update and Upgrade APT Packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        cache_valid_time: 3600
+    - name: Upgrade specific APT packages
+      apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - snapd
+        - python3-pip
+    - name: Refresh snap
+      command: snap refresh
+    - name: Autoclean package manager
+      command: apt-get autoclean
+    - name: Update Doom Emacs
+      command: /home/user/.emacs.d/bin/doom upgrade
+      become: no
+  # - name: Upgrade pip3 via python (possibly newer version)
+  #   pip:
+  #     name: pip
+  #     state: latest
+  #     executable: pip3
+  # - name: Upgrade all pip packages
+  #   shell: |
+  #     pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 python3 -m pip install -U
+  # - name: Remove unnecessary packages
+  #   apt:
+  #     autoremove: yes
